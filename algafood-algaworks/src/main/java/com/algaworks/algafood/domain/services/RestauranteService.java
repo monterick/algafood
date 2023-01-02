@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 @Service
 public class RestauranteService {
@@ -21,6 +22,10 @@ public class RestauranteService {
 	
 	public Restaurante buscarRestaurante(long id) {
 		return manager.find(Restaurante.class, id);
+	}
+	@Transactional
+	public Restaurante salvarRestaurante(Restaurante restaurante) {
+		return manager.merge(restaurante);
 	}
 	
 }

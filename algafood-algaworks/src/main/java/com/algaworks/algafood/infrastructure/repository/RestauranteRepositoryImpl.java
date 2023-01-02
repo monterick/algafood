@@ -27,4 +27,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 		return restauranteService.buscarRestaurante(id);
 	}
 
+	@Override
+	public Restaurante salvarRestaurante(Restaurante restaurante) {
+		return restauranteService.salvarRestaurante(restaurante);
+	}
+	
+	
+
 }

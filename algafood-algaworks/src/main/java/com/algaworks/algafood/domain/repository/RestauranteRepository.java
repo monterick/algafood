@@ -8,5 +8,6 @@ public interface RestauranteRepository {
 
 	public List<Restaurante> listarRestaurantes();
 	public Restaurante buscarRestaurante(long id);
+	public Restaurante salvarRestaurante(Restaurante restaurante);
 	
 }
