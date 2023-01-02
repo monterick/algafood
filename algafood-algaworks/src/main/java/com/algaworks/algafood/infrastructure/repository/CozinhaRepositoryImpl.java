@@ -25,4 +25,19 @@ public class CozinhaRepositoryImpl implements CozinhaRepository{
 		return cozinhaService.BuscarCozinha(id);
 	}
 
+	@Override
+	public Cozinha adicionarCozinha(Cozinha cozinha) {		
+		return cozinhaService.adicionarCozinha(cozinha);
+	}
+
+	@Override
+	public Cozinha atualizarCozinha(long id, Cozinha cozinha) {		
+		return cozinhaService.atualizarCozinha(id, cozinha);
+	}
+
+	@Override
+	public void removerCozinha(long id) {		
+		cozinhaService.deletarCozinha(id);
+	}
+
 }
