@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.infrastructure.repository.CozinhaRepositoryImpl;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -54,7 +55,7 @@ public class CozinhaController {
 	}
 	@DeleteMapping("/{id}")
 	public void excluir(@PathVariable(value = "id") long id) {
-		
+		cozinhaRepository.removerCozinha(id);
 	}
 	
 	
