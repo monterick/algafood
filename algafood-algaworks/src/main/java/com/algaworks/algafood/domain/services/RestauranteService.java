@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.services;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -24,8 +25,19 @@ public class RestauranteService {
 		return manager.find(Restaurante.class, id);
 	}
 	@Transactional
+	public Restaurante atualizarRestaurante(long id, Restaurante restaurante) {
+		Restaurante restauranteAtual = buscarRestaurante(id);
+		BeanUtils.copyProperties(restaurante, restauranteAtual,"id");
+		return restauranteAtual;
+	}
+	@Transactional
 	public Restaurante salvarRestaurante(Restaurante restaurante) {
 		return manager.merge(restaurante);
+	}
+	@Transactional
+	public void removerRetaurante(long id) {
+		Restaurante restaurante = buscarRestaurante(id);
+		manager.remove(restaurante);
 	}
 	
 }

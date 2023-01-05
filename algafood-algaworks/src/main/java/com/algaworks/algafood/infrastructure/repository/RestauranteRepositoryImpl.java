@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.services.CozinhaService;
 import com.algaworks.algafood.domain.services.RestauranteService;
 
 @Component
@@ -30,6 +31,16 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 	@Override
 	public Restaurante salvarRestaurante(Restaurante restaurante) {
 		return restauranteService.salvarRestaurante(restaurante);
+	}
+
+	@Override
+	public void removerRestaurante(long id) {
+	   restauranteService.removerRetaurante(id);		
+	}
+
+	@Override
+	public Restaurante atualizarRestaurante(long id, Restaurante restaurante) {
+		return restauranteService.atualizarRestaurante(id, restaurante);		
 	}
 	
 	
