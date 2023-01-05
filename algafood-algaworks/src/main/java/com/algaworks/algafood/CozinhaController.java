@@ -3,7 +3,6 @@ package com.algaworks.algafood;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,24 +16,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
-import com.algaworks.algafood.infrastructure.repository.CozinhaRepositoryImpl;
+import com.algaworks.algafood.services.CozinhaService;
 
 @RestController
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
 	@Autowired
-	CozinhaRepository cozinhaRepository;
+	CozinhaService cozinhaService;
 	
 	@GetMapping
 	public List<Cozinha> listarCozinhas(){
-		return cozinhaRepository.listarCozinhas();
+		return cozinhaService.listarCozinhas();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Cozinha> buscarCozinha(@PathVariable(value = "id") long id){
-		Cozinha cozinha = cozinhaRepository.BuscarCozinha(id);
+		Cozinha cozinha = cozinhaService.buscarCozinha(id);
 		if(cozinha!=null) {
 			return ResponseEntity.ok(cozinha);
 		}
@@ -43,11 +41,11 @@ public class CozinhaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cozinha adicionarCozinha(@RequestBody Cozinha cozinha) {
-		return cozinhaRepository.adicionarCozinha(cozinha);
+		return cozinhaService.salvarCozinha(cozinha);
 	}
 	@PutMapping("/{id}")
 	public ResponseEntity<Cozinha> alterarCozinha(@PathVariable(value = "id") long id,@RequestBody Cozinha cozinha) {
-		Cozinha cozinhaAlterada = cozinhaRepository.atualizarCozinha(id, cozinha);
+		Cozinha cozinhaAlterada = cozinhaService.atualizarCozinha(id, cozinha);
 		if(cozinhaAlterada!=null) {
 			return ResponseEntity.ok(cozinhaAlterada);
 		}
@@ -55,7 +53,7 @@ public class CozinhaController {
 	}
 	@DeleteMapping("/{id}")
 	public void excluir(@PathVariable(value = "id") long id) {
-		cozinhaRepository.removerCozinha(id);
+		cozinhaService.removerCozinha(id);
 	}
 	
 	

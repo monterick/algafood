@@ -2,45 +2,54 @@ package com.algaworks.algafood.infrastructure.repository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.domain.services.CozinhaService;
-import com.algaworks.algafood.domain.services.RestauranteService;
+
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 @Component
 public class RestauranteRepositoryImpl implements RestauranteRepository{
 
-	@Autowired
-	RestauranteService restauranteService;
+	@PersistenceContext
+	EntityManager manager;
 	
 	@Override
 	public List<Restaurante> listarRestaurantes() {
 		
-		return restauranteService.listarRestaurantes();
+		return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
 	}
 
 	@Override
 	public Restaurante buscarRestaurante(long id) {
 		// TODO Auto-generated method stub
-		return restauranteService.buscarRestaurante(id);
+		return manager.find(Restaurante.class, id);
 	}
 
 	@Override
+	@Transactional
 	public Restaurante salvarRestaurante(Restaurante restaurante) {
-		return restauranteService.salvarRestaurante(restaurante);
+		return manager.merge(restaurante);
 	}
 
 	@Override
+	@Transactional
 	public void removerRestaurante(long id) {
-	   restauranteService.removerRetaurante(id);		
+	   Restaurante restaurante = buscarRestaurante(id);
+	   manager.remove(restaurante);		
 	}
 
 	@Override
+	@Transactional
 	public Restaurante atualizarRestaurante(long id, Restaurante restaurante) {
-		return restauranteService.atualizarRestaurante(id, restaurante);		
+		Restaurante restauranteAtual = buscarRestaurante(id);
+		BeanUtils.copyProperties(restaurante, restauranteAtual,"id");
+		return restauranteAtual;
 	}
 	
 	
