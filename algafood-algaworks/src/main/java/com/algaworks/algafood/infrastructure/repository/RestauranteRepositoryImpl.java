@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.repository;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,17 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 	@Transactional
 	public Restaurante adicionarRestaurante(Restaurante restaurante) {
 		return manager.merge(restaurante);
+	}
+	
+	@Override
+	@Transactional
+	public Restaurante alterarRestaurante(long id, Restaurante restaurante) {
+		Restaurante restauranteAtual = buscarRestaurante(id);
+		if(restauranteAtual!=null) {
+			BeanUtils.copyProperties(restaurante, restauranteAtual,"id");
+			adicionarRestaurante(restauranteAtual);
+		}
+		return restauranteAtual;
 	}
 
 	@Override
