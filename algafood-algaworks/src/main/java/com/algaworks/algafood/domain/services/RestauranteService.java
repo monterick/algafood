@@ -39,7 +39,14 @@ public class RestauranteService {
 		return restauranteRepository.adicionarRestaurante(restaurante);
 	}
 	public Restaurante alterarRestaurante(long id, Restaurante restaurante) {
-		return restauranteRepository.alterarRestaurante(id, restaurante);
+		long cozinhaId = restaurante.getCozinha().getId();
+		Cozinha cozinha = cozinhaRepository.buscarCozinha(cozinhaId);
+		Restaurante restaurante2 = restauranteRepository.alterarRestaurante(id, restaurante);
+		if(cozinha == null) {
+			throw new EntidadeNaoEncontadaException(String.format("Não existe cozinha cadastrada com código %d", cozinhaId));
+		}
+		
+		return restaurante2;
 	}
 	public void removerRestaurante(long id) {
 	   try {	

@@ -40,21 +40,29 @@ public class RestauranteController {
 		return ResponseEntity.notFound().build();
 	}
 	@PostMapping
-	public ResponseEntity<Restaurante> adicionarRestaurante(@RequestBody Restaurante restaurante) {
+	public ResponseEntity<?> adicionarRestaurante(@RequestBody Restaurante restaurante) {
 	   try {
 		 Restaurante restaurante2 = restauranteService.adicionarRestaurante(restaurante);
 		 return ResponseEntity.status(HttpStatus.CREATED).body(restaurante2); 
 	   }catch (EntidadeNaoEncontadaException e) {
-		 return ResponseEntity.badRequest().build();
+		 return ResponseEntity.badRequest().body(e.getMessage());
 	   }
 	}
 	@PutMapping("/{id}")
-	public ResponseEntity<Restaurante> alterarRestaurante(@PathVariable(value = "id") long id, @RequestBody Restaurante restaurante){
-		Restaurante restaurante2 = restauranteService.alterarRestaurante(id, restaurante);
+	public ResponseEntity<?> alterarRestaurante(@PathVariable(value = "id") long id, @RequestBody Restaurante restaurante){
+		try {
+		 Restaurante restaurante2 = restauranteService.alterarRestaurante(id, restaurante);
 		if(restaurante2!=null) {
 			return ResponseEntity.ok(restaurante2);
-		}
+		} 			
+		
 		return ResponseEntity.notFound().build();
+		
+		}catch (EntidadeNaoEncontadaException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}	
+		
+		
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Restaurante> removerRestaurante(@PathVariable(value = "id") long id){
