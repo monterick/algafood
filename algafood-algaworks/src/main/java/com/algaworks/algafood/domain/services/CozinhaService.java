@@ -4,8 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontadaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
@@ -35,10 +40,13 @@ public class CozinhaService {
 		return cozinhaAtual;
 	}
 	public void removerCozinha(long id) {
-		Cozinha cozinha = buscarCozinha(id);
-		if(cozinha!=null) {
-		 cozinhaRepository.removerCozinha(id);
-		}
+	  try {	
+	  	cozinhaRepository.removerCozinha(id);
+	  }catch (EmptyResultDataAccessException e) {
+		throw new EntidadeNaoEncontadaException(String.format("Não existe um cadastro de cozinha com o código %d", id));	  
+	  }catch (DataIntegrityViolationException e) {
+		throw new EntidadeEmUsoException(String.format("Cozinha de código %d está em uso ",id));
+	  }
 	}
 	
 }
