@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontadaException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.services.EstadoService;
@@ -54,12 +55,14 @@ public class EstadoController {
 		
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Estado> removerEstado(@PathVariable(value = "id") long id) {
+	public ResponseEntity<?> removerEstado(@PathVariable(value = "id") long id) {
 		try {
 			estadoService.removerEstado(id);
 			return ResponseEntity.noContent().build();
 		}catch (EntidadeNaoEncontadaException e) {
 			return ResponseEntity.notFound().build();
+		}catch (EntidadeEmUsoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	

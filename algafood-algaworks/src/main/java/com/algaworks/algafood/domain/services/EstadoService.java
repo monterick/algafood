@@ -3,10 +3,12 @@ package com.algaworks.algafood.domain.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontadaException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
@@ -40,6 +42,8 @@ public class EstadoService {
 		estadoRepository.removerEstado(id);
 	   }catch (EmptyResultDataAccessException e) {
 		throw new EntidadeNaoEncontadaException(String.format("Estado com código %d não está cadastrado", id));
+	   }catch (DataIntegrityViolationException e) {
+		throw new EntidadeEmUsoException(String.format("Estado de código %d está em uso", id));
 	   }
 	}
 	
