@@ -43,6 +43,11 @@ public class Cozinha {
 		Cozinha other = (Cozinha) obj;
 		return id == other.id;
 	}
+	@Override
+	public String toString() {
+		return "Cozinha [id=" + id + ", nome=" + nome + "]";
+	}
+	
 	
 	
 	

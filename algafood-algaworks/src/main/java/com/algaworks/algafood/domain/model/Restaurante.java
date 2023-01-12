@@ -61,6 +61,11 @@ public class Restaurante {
 		Restaurante other = (Restaurante) obj;
 		return id == other.id;
 	}
+	@Override
+	public String toString() {
+		return "Restaurante [id=" + id + ", nome=" + nome + ", taxaFrete=" + taxaFrete + ", cozinha=" + cozinha + "]";
+	}
+	
 	
 	
 
