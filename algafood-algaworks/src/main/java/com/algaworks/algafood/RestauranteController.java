@@ -107,4 +107,26 @@ public class RestauranteController {
 		});
 	}
 	
+	public ResponseEntity<?> atualizarParcial2(long id, Map<String, Object> campos) {
+		Restaurante restauranteAtual = restauranteService.buscarRestaurante(id);
+		if(restauranteAtual==null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		merge2(campos, restauranteAtual);
+		
+		return alterarRestaurante(id, restauranteAtual);
+	}
+	private void merge2(Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Restaurante restauranteOrigem = objectMapper.convertValue(camposOrigem, Restaurante.class);
+		camposOrigem.forEach((nomePropriedade,propriedade)->{
+			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+			field.setAccessible(true);
+			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+			System.out.println(nomePropriedade+" = "+propriedade);
+			ReflectionUtils.setField(field, restauranteDestino, novoValor);
+		});
+	}
+	
 }
