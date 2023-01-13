@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +22,24 @@ public class CozinhaService {
 	CozinhaRepository cozinhaRepository;
 	
 	public List<Cozinha> listarCozinhas(){
-		return cozinhaRepository.listarCozinhas();
+		return cozinhaRepository.findAll();
 	}
 	
-	public Cozinha buscarCozinha(long id) {
-		return cozinhaRepository.buscarCozinha(id);
+	public Optional<Cozinha> buscarCozinha(long id) {
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+		return cozinha;
 	}
 	
 	public Cozinha salvarCozinha(Cozinha cozinha) {
-		return cozinhaRepository.salvarCozinha(cozinha);
+		return cozinhaRepository.save(cozinha);
 	}
 	public Cozinha alterarCozinha(long id, Cozinha cozinha) {
-		Cozinha cozinhaAtual = buscarCozinha(id);
+		Optional<Cozinha> cozinhaAtual = buscarCozinha(id);
 		if(cozinhaAtual!=null) {
-		 BeanUtils.copyProperties(cozinha, cozinhaAtual,"id");
-		 salvarCozinha(cozinhaAtual);
+		 BeanUtils.copyProperties(cozinha, cozinhaAtual.get(),"id");
+		 salvarCozinha(cozinhaAtual.get());
 		}
-		return cozinhaAtual;
+		return cozinhaAtual.get();
 	}
 	public void removerCozinha(long id) {
 	  try {	
