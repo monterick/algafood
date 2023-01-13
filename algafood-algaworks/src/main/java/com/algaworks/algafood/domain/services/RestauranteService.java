@@ -34,24 +34,26 @@ public class RestauranteService {
 	}
 	public Restaurante adicionarRestaurante(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
-		if(cozinha.isEmpty()) {
-			throw new EntidadeNaoEncontadaException(
-					String.format("Não existe cozinha cadastrada com código %d", cozinhaId));
-		}
-		restaurante.setCozinha(cozinha.get());
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+				.orElseThrow(() -> 
+				new EntidadeNaoEncontadaException(
+						String.format("Não existe cozinha cadastrada com código %d", cozinhaId))
+						);
+	
+		restaurante.setCozinha(cozinha);
 		return restauranteRepository.save(restaurante);
 	}
 	public Restaurante alterarRestaurante(long id, Restaurante restaurante) {
 		long cozinhaId = restaurante.getCozinha().getId();
-		Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+				.orElseThrow(()-> new EntidadeNaoEncontadaException(
+						String.format("Não existe cozinha cadastrada com código %d", cozinhaId)))
+				;
 		Optional<Restaurante> restaurante2 = restauranteRepository.findById(id);
 		if(restaurante2.isEmpty()) {
 			throw new EntidadeNaoEncontadaException(String.format("Não existe Retaurante cadastrado com código %d", id));
 		}
-		if(cozinha.isEmpty()) {
-			throw new EntidadeNaoEncontadaException(String.format("Não existe cozinha cadastrada com código %d", cozinhaId));
-		}		
+	
 	    
 		BeanUtils.copyProperties(restaurante, restaurante2.get());
 		
