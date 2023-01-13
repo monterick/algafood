@@ -43,8 +43,7 @@ public class CozinhaService {
 	}
 	public void removerCozinha(long id) {
 	  try {	
-		Cozinha cozinha = buscarCozinha(id).get();  
-	  	cozinhaRepository.delete(cozinha);
+		cozinhaRepository.deleteById(id);
 	  }catch (EmptyResultDataAccessException e) {
 		throw new EntidadeNaoEncontadaException(String.format("Não existe um cadastro de cozinha com o código %d", id));	  
 	  }catch (DataIntegrityViolationException e) {
