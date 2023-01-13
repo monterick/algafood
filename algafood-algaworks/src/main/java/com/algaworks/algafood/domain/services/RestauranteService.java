@@ -32,7 +32,7 @@ public class RestauranteService {
 	}
 	public Restaurante adicionarRestaurante(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.buscarCozinha(cozinhaId);
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).get();
 		if(cozinha == null) {
 			throw new EntidadeNaoEncontadaException(String.format("Não existe cozinha cadastrada com código %d", cozinhaId));
 		}
@@ -40,7 +40,7 @@ public class RestauranteService {
 	}
 	public Restaurante alterarRestaurante(long id, Restaurante restaurante) {
 		long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.buscarCozinha(cozinhaId);
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId).get();
 		Restaurante restaurante2 = restauranteRepository.alterarRestaurante(id, restaurante);
 		if(cozinha == null) {
 			throw new EntidadeNaoEncontadaException(String.format("Não existe cozinha cadastrada com código %d", cozinhaId));
